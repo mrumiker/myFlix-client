@@ -7,8 +7,8 @@ import './index.scss';
 class myFlixApplication extends React.Component {
   render() {
     return (
-      <div classname="my-flix">
-        <div>Good evening</div>
+      <div className="my-flix">
+        <div>Happy Thanksgiving! 🦃</div>
       </div>
     );
   }
