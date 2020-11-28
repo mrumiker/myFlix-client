@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import { render } from 'sass';
 
 export class MainView extends React.Component {
 
