@@ -4,6 +4,11 @@ import { render } from 'sass';
 
 export class MainView extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {};
+  }
+
   componentDidMount() {
     axios.get('https://cbu-pix-flix.herokuapp.com/movies')
       .then(response => {
