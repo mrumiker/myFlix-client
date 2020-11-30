@@ -8,7 +8,7 @@ export function LoginView(props) {
     e.preventDefault();
     console.log(username, password);
     // Send a req to the server for authentication then call props.onLoggedIn(username)
-    // props.onLoggedIn(username)  
+    props.onLoggedIn(username)
   };
 
   return (
