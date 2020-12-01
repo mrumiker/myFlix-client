@@ -9,8 +9,8 @@ export function RegistrationView(props) {
   const handleRegister = (e) => {
     e.preventDefault();
     console.log(username, password, email, birthday);
-    props.onRegistered();
     //post to 'users' in database
+    window.location.reload();
   };
 
   return (
