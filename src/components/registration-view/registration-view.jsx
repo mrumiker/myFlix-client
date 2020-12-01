@@ -28,7 +28,7 @@ export function RegistrationView(props) {
 
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+        <Form.Control type="password" placeholder="Enter Password" value={password} onChange={e => setPassword(e.target.value)} />
       </Form.Group>
 
       <Form.Group controlId="formBasicEmail">
@@ -38,10 +38,10 @@ export function RegistrationView(props) {
 
       <Form.Group controlId="formBasicBirthday">
         <Form.Label>Birthday</Form.Label>
-        <Form.Control type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
+        <Form.Control type="date" placeholder="01/01/2000" value={birthday} onChange={e => setBirthday(e.target.value)} />
       </Form.Group>
 
-      <Button onClick={handleRegister}>Register</Button>
+      <Button variant="secondary" onClick={handleRegister}>Register</Button>
 
     </Form>
 
