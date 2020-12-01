@@ -6,6 +6,10 @@ import { RegistrationView } from '../registration-view/registration-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 export class MainView extends React.Component {
 
   constructor() {
@@ -61,9 +65,16 @@ export class MainView extends React.Component {
     return (
       <div className="main-view">
         {selectedMovie ? <MovieView movie={selectedMovie} />
-          : movies.map(movie => (
-            <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
-          ))
+          : <Container fluid>
+            <Row>
+              {movies.map(movie => (
+                <Col key={movie._id} xs={12} sm={6} md={4} lg={3}>
+                  <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
+                </Col>
+              ))}
+            </Row>
+          </Container>
+
         }
       </div>
     );
