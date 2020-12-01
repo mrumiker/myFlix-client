@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export function RegistrationView() {
+export function RegistrationView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -9,6 +9,7 @@ export function RegistrationView() {
   const handleRegister = (e) => {
     e.preventDefault();
     console.log(username, password, email, birthday);
+    props.onRegistered();
     //post to 'users' in database
   };
 
@@ -34,6 +35,7 @@ export function RegistrationView() {
       </label>
       <button type="button" onClick={handleRegister}>Submit</button>
     </form>
+
   );
 
 }
