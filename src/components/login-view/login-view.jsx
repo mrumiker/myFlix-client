@@ -13,7 +13,7 @@ export function LoginView(props) {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    props.onRegister();
+    props.toggleRegistered(false);
   };
 
   return (

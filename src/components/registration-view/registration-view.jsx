@@ -10,7 +10,8 @@ export function RegistrationView(props) {
     e.preventDefault();
     console.log(username, password, email, birthday);
     //post to 'users' in database
-    window.location.reload();
+    props.onLoggedIn(username);
+    props.toggleRegistered(true);
   };
 
   return (
