@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
-export function RegistrationView(props) {
+export function RegistrationView() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
     console.log(username, password, email, birthday);
-    props.onLoggedIn(username);
-  }
+    //post to 'users' in database
+  };
 
   return (
 
@@ -32,7 +32,7 @@ export function RegistrationView(props) {
         Birthday:
         <input type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
       </label>
-      <button type="button" onClick={handleSubmit}>Submit</button>
+      <button type="button" onClick={handleRegister}>Submit</button>
     </form>
   );
 
