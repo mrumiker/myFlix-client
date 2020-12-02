@@ -41,6 +41,12 @@ export class MainView extends React.Component {
     });
   }
 
+  onBackClick() {
+    this.setState({
+      selectedMovie: null
+    });
+  }
+
   onLoggedIn(user) {
     this.setState({
       user
@@ -64,7 +70,7 @@ export class MainView extends React.Component {
 
     return (
       <div className="main-view">
-        {selectedMovie ? <MovieView movie={selectedMovie} />
+        {selectedMovie ? <MovieView movie={selectedMovie} onClick={() => this.onBackClick()} />
           : <Container fluid>
             <Row>
               {movies.map(movie => (

@@ -11,7 +11,7 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie } = this.props;
+    const { movie, onClick } = this.props;
 
     if (!movie) return null;
 
@@ -31,7 +31,7 @@ export class MovieView extends React.Component {
             {`Director: ${movie.Director.Name}`}
           </Card.Text>
 
-          <Button className="back-button" variant="secondary" onClick={() => window.location.reload()}>Back</Button>
+          <Button className="back-button" variant="secondary" onClick={() => onClick()}>Back</Button>
 
         </Card.Body>
       </Card>
@@ -56,6 +56,7 @@ MovieView.proptypes = {
     }).isRequired,
     ImagePath: PropTypes.string.isRequired,
     Featured: PropTypes.bool
-  }).isRequired
+  }).isRequired,
+  onClick: PropTypes.func.isRequired
 
 }
