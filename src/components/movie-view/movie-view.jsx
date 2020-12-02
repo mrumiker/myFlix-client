@@ -31,7 +31,7 @@ export class MovieView extends React.Component {
             {`Director: ${movie.Director.Name}`}
           </Card.Text>
 
-          <Button className="back-button" variant="secondary" onClick={() => onClick()}>Back</Button>
+          <Button className="back-button" variant="secondary" onClick={() => onClick(null)}>Back</Button>
 
         </Card.Body>
       </Card>
