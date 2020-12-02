@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -48,3 +49,8 @@ export function RegistrationView(props) {
   );
 
 }
+
+RegistrationView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired,
+  toggleRegistered: PropTypes.func.isRequired
+};
