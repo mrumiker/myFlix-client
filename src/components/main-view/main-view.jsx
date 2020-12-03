@@ -44,6 +44,7 @@ export class MainView extends React.Component {
         this.setState({
           movies: response.data
         });
+        response.data.map(movie => console.log(movie._id));
       })
       .catch(function (error) {
         console.log(error);
@@ -92,22 +93,29 @@ export class MainView extends React.Component {
 
     return (
 
-      <div className="main-view">
-        {selectedMovie ? <MovieView movie={selectedMovie} onClick={movie => this.onMovieClick(movie)} />
-          : <Container fluid>
+      <Router>
+        <div className="main-view">
+          <Container fluid>
             <Row>
-              {movies.map(movie => (
-                <Col key={movie._id} xs={12} sm={6} md={4} lg={3}>
-                  <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
+              <Route exact path="/" render={() => movies.map(m => (
+                <Col key={m._id} xs={12} sm={6} md={4} lg={3}>
+                  <MovieCard key={m._id} movie={m} />
                 </Col>
-              ))}
+
+              ))} />
+              <Route path="/movies/:movieId" render={({ match }) =>
+                <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
+
             </Row>
             <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>
+
           </Container>
 
 
-        }
-      </div>
+
+
+        </div>
+      </Router>
     );
   }
 }
