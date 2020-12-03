@@ -9,6 +9,7 @@ import { MovieView } from '../movie-view/movie-view';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 export class MainView extends React.Component {
 
@@ -24,7 +25,19 @@ export class MainView extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('https://cbu-pix-flix.herokuapp.com/movies')
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
+      });
+      this.getMovies(accessToken);
+    }
+  }
+
+  getMovies(token) {
+    axios.get('https://cbu-pix-flix.herokuapp.com/movies', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         this.setState({
           movies: response.data
@@ -41,10 +54,21 @@ export class MainView extends React.Component {
     });
   }
 
-  onLoggedIn(user) {
+  onLoggedIn(authData) {
+    console.log(authData);
     this.setState({
-      user
+      user: authData.user.Username
     });
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.Username);
+    this.getMovies(authData.token);
+  }
+
+  onLoggedOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.reload();
   }
 
   toggleRegistered(registered) {
@@ -52,6 +76,8 @@ export class MainView extends React.Component {
       registered
     });
   }
+
+
 
   render() {
     const { movies, selectedMovie, user, registered } = this.state;
@@ -73,7 +99,9 @@ export class MainView extends React.Component {
                 </Col>
               ))}
             </Row>
+            <Button className="logout-button" onClick={() => this.onLoggedOut()}>Logout</Button>
           </Container>
+
 
         }
       </div>
