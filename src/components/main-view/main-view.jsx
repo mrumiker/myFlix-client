@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { MovieCard } from '../movie-card/movie-card';
@@ -89,6 +91,7 @@ export class MainView extends React.Component {
     if (!movies) return <div className="main-view" />;
 
     return (
+
       <div className="main-view">
         {selectedMovie ? <MovieView movie={selectedMovie} onClick={movie => this.onMovieClick(movie)} />
           : <Container fluid>
@@ -99,7 +102,7 @@ export class MainView extends React.Component {
                 </Col>
               ))}
             </Row>
-            <Button className="logout-button" onClick={() => this.onLoggedOut()}>Logout</Button>
+            <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>
           </Container>
 
 
