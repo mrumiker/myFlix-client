@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
+import { Link } from 'react-router-dom';
+
 export class MovieView extends React.Component {
 
   constructor() {
@@ -16,7 +18,7 @@ export class MovieView extends React.Component {
     if (!movie) return null;
 
     return (
-      <Card style={{ width: '16rem' }} className="movie-view">
+      <Card border="info" style={{ width: '16rem' }} className="movie-view">
         <Card.Img className="movie-poster" src={movie.ImagePath} />
         <Card.Body>
           <Card.Title className="movie-title">{movie.Title}</Card.Title>
@@ -30,6 +32,12 @@ export class MovieView extends React.Component {
           <Card.Text className="movie-info">
             {`Director: ${movie.Director.Name}`}
           </Card.Text>
+          <Link to="#">
+            <Button variant="link">Director</Button>
+          </Link>
+          <Link to="#">
+            <Button variant="link">Genre</Button>
+          </Link>
 
           <Button className="back-button" variant="secondary" onClick={() => onClick(null)}>Back</Button>
 
