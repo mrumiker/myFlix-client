@@ -7,6 +7,7 @@ import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
+import { DirectorView } from '../director-view/director-view';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -123,6 +124,15 @@ export class MainView extends React.Component {
 
               <Route exact path="/movies/:movieId" render={({ match }) =>
                 <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
+
+              <Route exact path="/directors/:name" render={({ match }) => {
+                if (!movies) return <div className="main-view" />
+                return <DirectorView director={movies.find(m =>
+                  m.Director.Name === match.params.name).Director} />
+              }
+              } />
+
+
 
             </Row>
             {logOutButton}

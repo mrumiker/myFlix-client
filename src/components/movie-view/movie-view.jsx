@@ -13,7 +13,7 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie, onClick } = this.props;
+    const { movie } = this.props;
 
     if (!movie) return null;
 
@@ -32,7 +32,7 @@ export class MovieView extends React.Component {
           <Card.Text className="movie-info">
             {`Director: ${movie.Director.Name}`}
           </Card.Text>
-          <Link to="#">
+          <Link to={`/directors/${movie.Director.Name}`}>
             <Button variant="link">Director</Button>
           </Link>
           <Link to="#">
