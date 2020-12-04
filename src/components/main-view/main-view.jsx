@@ -19,7 +19,7 @@ export class MainView extends React.Component {
     super();
 
     this.state = {
-      movies: null,
+      movies: [],
       selectedMovie: null,
       user: null,
       registered: true
@@ -67,10 +67,21 @@ export class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
+  onRegistered(authData) {
+    console.log(authData);
+    this.setState({
+      user: authData.Username
+    });
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.Username);
+    this.getMovies(authData.token);
+  }
+
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.reload();
+    window.open('/', '_self');
   }
 
   toggleRegistered(registered) {
@@ -84,10 +95,6 @@ export class MainView extends React.Component {
   render() {
     const { movies, selectedMovie, user, registered } = this.state;
 
-    if (!registered) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} toggleRegistered={registered => this.toggleRegistered(registered)} />
-
-    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} toggleRegistered={registered => this.toggleRegistered(registered)} />;
-
     if (!movies) return <div className="main-view" />;
 
     return (
@@ -97,13 +104,20 @@ export class MainView extends React.Component {
           <Container fluid>
             <Row>
 
-              <Route exact path="/" render={() => movies.map(m => (
+              <Route exact path="/" render={() => {
+                if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
 
-                <Col key={m._id} xs={12} sm={6} md={4} lg={3}>
-                  <MovieCard key={m._id} movie={m} />
-                </Col>
+                return movies.map(m => (
 
-              ))} />
+                  <Col key={m._id} xs={12} sm={6} md={4} lg={3}>
+                    <MovieCard key={m._id} movie={m} />
+                  </Col>
+
+                ))
+              }
+              } />
+
+              <Route path="/register" render={() => <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />} />
 
               <Route exact path="/movies/:movieId" render={({ match }) =>
                 <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />

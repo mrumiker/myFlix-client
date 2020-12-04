@@ -27,7 +27,7 @@ export function LoginView(props) {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    props.toggleRegistered(false);
+    window.open('/register', '_self');
   };
 
   return (
@@ -58,5 +58,4 @@ export function LoginView(props) {
 
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
-  toggleRegistered: PropTypes.func.isRequired
 };
