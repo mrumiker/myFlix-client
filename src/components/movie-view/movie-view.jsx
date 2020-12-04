@@ -39,7 +39,9 @@ export class MovieView extends React.Component {
             <Button variant="link">Genre</Button>
           </Link>
 
-          <Button className="back-button" variant="secondary" onClick={() => onClick(null)}>Back</Button>
+          <Link to="/">
+            <Button className="back-button" variant="secondary">Back</Button>
+          </Link>
 
         </Card.Body>
       </Card>
@@ -66,6 +68,5 @@ MovieView.proptypes = {
     ImagePath: PropTypes.string.isRequired,
     Featured: PropTypes.bool
   }).isRequired,
-  onClick: PropTypes.func.isRequired
 
 }

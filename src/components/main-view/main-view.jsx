@@ -95,12 +95,15 @@ export class MainView extends React.Component {
   render() {
     const { movies, selectedMovie, user, registered } = this.state;
 
-    if (!movies) return <div className="main-view" />;
+    const logOutButton = <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
+
+    if (!movies) return <div className="main-view">{logOutButton}</div>;
 
     return (
 
       <Router>
         <div className="main-view">
+
           <Container fluid>
             <Row>
 
@@ -108,7 +111,6 @@ export class MainView extends React.Component {
                 if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
 
                 return movies.map(m => (
-
                   <Col key={m._id} xs={12} sm={6} md={4} lg={3}>
                     <MovieCard key={m._id} movie={m} />
                   </Col>
@@ -122,10 +124,8 @@ export class MainView extends React.Component {
               <Route exact path="/movies/:movieId" render={({ match }) =>
                 <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
 
-
-
             </Row>
-            <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>
+            {logOutButton}
           </Container>
         </div>
       </Router>
