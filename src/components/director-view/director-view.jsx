@@ -13,9 +13,10 @@ export class DirectorView extends React.Component {
   }
 
   render() {
-    const { director } = this.props;
+    const { director, films } = this.props;
 
     if (!director) return null;
+
 
     if (director.Death) {
 
@@ -33,6 +34,11 @@ export class DirectorView extends React.Component {
             <Card.Text className="director-death">
               {`Died: ${director.Death}`}
             </Card.Text>
+            <Card.Text>
+              Films:
+            </Card.Text>
+
+            {films.map(film => <Card.Text key={film}>{film}</Card.Text>)}
 
 
             <Link to="/">
@@ -54,6 +60,11 @@ export class DirectorView extends React.Component {
             <Card.Text className="director-birth">
               {`Born: ${director.Birth}`}
             </Card.Text>
+            <Card.Text>
+              Films:
+            </Card.Text>
+
+            {films.map(film => <Card.Text key={film}>{film}</Card.Text>)}
 
 
             <Link to="/">
@@ -74,6 +85,6 @@ DirectorView.proptypes = {
     Bio: PropTypes.string.isRequired,
     Birth: PropTypes.string.isRequired,
     Death: PropTypes.string
-  }).isRequired
-
+  }).isRequired,
+  films: PropTypes.array
 }
