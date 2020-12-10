@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, ListGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
@@ -17,7 +17,6 @@ export class DirectorView extends React.Component {
 
     if (!director) return null;
 
-
     if (director.Death) {
 
       return (
@@ -28,18 +27,24 @@ export class DirectorView extends React.Component {
             <Card.Text className="director-bio">
               {director.Bio}
             </Card.Text>
-            <Card.Text className="director-birth">
-              {`Born: ${director.Birth}`}
-            </Card.Text>
-            <Card.Text className="director-death">
-              {`Died: ${director.Death}`}
-            </Card.Text>
-            <Card.Text>
-              Films:
-            </Card.Text>
-
-            {films.map(film => <Card.Text key={film}>{film}</Card.Text>)}
-
+            <Card.Header>
+              Born
+            </Card.Header>
+            <ListGroup variant="flush">
+              <ListGroup.Item>{director.Birth}</ListGroup.Item>
+            </ListGroup>
+            <Card.Header>
+              Died
+            </Card.Header>
+            <ListGroup variant="flush">
+              <ListGroup.Item>{director.Death}</ListGroup.Item>
+            </ListGroup>
+            <Card.Header>
+              Films
+            </Card.Header>
+            <ListGroup variant="flush">
+              {films.map(film => <ListGroup.Item key={film}>{film}</ListGroup.Item>)}
+            </ListGroup>
 
             <Link to="/">
               <Button className="back-button" variant="secondary">Back</Button>
@@ -57,15 +62,19 @@ export class DirectorView extends React.Component {
             <Card.Text className="director-bio">
               {director.Bio}
             </Card.Text>
-            <Card.Text className="director-birth">
-              {`Born: ${director.Birth}`}
-            </Card.Text>
-            <Card.Text>
-              Films:
-            </Card.Text>
+            <Card.Header>
+              Born
+            </Card.Header>
+            <ListGroup variant="flush">
+              <ListGroup.Item>{director.Birth}</ListGroup.Item>
+            </ListGroup>
 
-            {films.map(film => <Card.Text key={film}>{film}</Card.Text>)}
-
+            <Card.Header>
+              Films
+            </Card.Header>
+            <ListGroup variant="flush">
+              {films.map(film => <ListGroup.Item key={film}>{film}</ListGroup.Item>)}
+            </ListGroup>
 
             <Link to="/">
               <Button className="back-button" variant="secondary">Back</Button>
