@@ -8,6 +8,8 @@ import { RegistrationView } from '../registration-view/registration-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { DirectorView } from '../director-view/director-view';
+import { GenreView } from '../genre-view/genre-view';
+
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -129,8 +131,13 @@ export class MainView extends React.Component {
                 if (!movies) return <div className="main-view" />
                 return <DirectorView director={movies.find(m =>
                   m.Director.Name === match.params.name).Director} films={(movies.filter(m => m.Director.Name === match.params.name)).map(film => film.Title)} />
-              }
-              } />
+              }} />
+
+              <Route exact path="/genres/:name" render={({ match }) => {
+                if (!movies) return <div className="main-view" />
+                return <GenreView genre={movies.find(m =>
+                  m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name)).map(film => film.Title)} />
+              }} />
 
 
 

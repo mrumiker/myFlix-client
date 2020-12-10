@@ -20,7 +20,7 @@ export class DirectorView extends React.Component {
     if (director.Death) {
 
       return (
-        <Card border="danger" style={{ width: '16rem' }} className="director-view">
+        <Card border="danger" style={{ width: '22rem' }} className="director-view">
           <Card.Body>
             <Card.Title className="director-name">{director.Name}</Card.Title>
 
