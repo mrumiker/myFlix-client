@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
 export function ProfileView(props) {
+  console.log(props);
   const [username, setUsername] = useState(localStorage.getItem('user'));
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -14,23 +15,6 @@ export function ProfileView(props) {
   const [favorites, setFavorites] = useState([]);
 
   let token = localStorage.getItem('token');
-
-  {/* Maybe set this in Main View as an onClick on the Profile Button, and pass these as props
-  The purpose of this is to set the States to the existing data so that they will stay the same if the user leaves that field blank
-  Also, to get the favorite movies to display*/ }
-  axios.get(`https://cbu-pix-flix.herokuapp.com/users/${username}`,
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(response => {
-      setPassword(response.data.Password);
-      setEmail(response.data.Email);
-      setBirthday(response.data.Birthday);
-      setFavorites(response.data.Favorites);
-    })
-    .catch(err => {
-      console.log(err);
-    });
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -80,5 +64,5 @@ export function ProfileView(props) {
         console.log(err);
       });
   }
-  {/* return the Profile View */ }
+  return (<h1>Profile</h1>)
 }

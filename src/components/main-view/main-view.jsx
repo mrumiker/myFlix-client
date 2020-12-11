@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
@@ -9,7 +9,7 @@ import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
-
+import { ProfileView } from '../profile-view/profile-view';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -25,17 +25,20 @@ export class MainView extends React.Component {
       movies: [],
       selectedMovie: null,
       user: null,
-      registered: true
+      registered: true,
+      userData: {}
     };
   }
 
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
+      const user = localStorage.getItem('user');
       this.setState({
-        user: localStorage.getItem('user')
+        user
       });
       this.getMovies(accessToken);
+      this.getUserInfo(user, accessToken);
     }
   }
 
@@ -51,6 +54,28 @@ export class MainView extends React.Component {
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  getUserInfo(user, token) {
+    {/*Pass this data as a Prop to Profile View*/ }
+    axios.get(`https://cbu-pix-flix.herokuapp.com/users/${user}`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(response => {
+        this.setState({
+          userData: response.data
+        })
+        return response.data;
+      })
+      .catch(err => {
+        console.log(err);
+        return null;
+      });
+  }
+
+  updateUserInfo = user => {
+    this.setState({ user });
   }
 
   onMovieClick(movie) {
@@ -98,15 +123,17 @@ export class MainView extends React.Component {
   render() {
     const { movies, selectedMovie, user, registered } = this.state;
 
-    const logOutButton = <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
+    const logOutButton = !user ? '' :
+      <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
 
-    if (!movies) return <div className="main-view">{logOutButton}</div>;
+    if (!movies) return <div className="main-view" />;
 
     return (
 
       <Router>
         <div className="main-view">
-
+          <Link to={'/'}>Home</Link>
+          <Link to={'/profile'}>Profile</Link>
           <Container fluid>
             <Row>
 
@@ -139,10 +166,11 @@ export class MainView extends React.Component {
                   m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name)).map(film => film.Title)} />
               }} />
 
-
-
+              <Route exact path="/profile" render={() => <ProfileView {...this.state.userData} updateUserInfo={this.updateUserInfo} />} />
             </Row>
+
             {logOutButton}
+
           </Container>
         </div>
       </Router>
