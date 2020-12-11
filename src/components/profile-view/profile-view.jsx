@@ -8,23 +8,25 @@ import axios from 'axios';
 
 export function ProfileView(props) {
   console.log(props);
-  const [username, setUsername] = useState(localStorage.getItem('user'));
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [favorites, setFavorites] = useState([]);
+  const { Username, Email, Birthday, Favorites } = props;
+
+  //const [username, setUsername] = useState(localStorage.getItem('user'));
+  //const [password, setPassword] = useState('');
+  //const [email, setEmail] = useState('');
+  //const [birthday, setBirthday] = useState('');
+  //const [favorites, setFavorites] = useState([]);
 
   let token = localStorage.getItem('token');
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    axios.put(`https://cbu-pix-flix.herokuapp.com/users/${username}`,
+    axios.put(`https://cbu-pix-flix.herokuapp.com/users/${Username}`,
       {
         headers: { Authorization: `Bearer ${token}` },
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday
+        Username,
+        Password,
+        Email,
+        Birthday
       })
       .then(response => {
         const data = response.data;
@@ -35,7 +37,7 @@ export function ProfileView(props) {
       });
   };
 
-  {/* this function will be added to an "Onclick" on the Remove Button next to each favorite movie */ }
+  /* this function will be added to an "Onclick" on the Remove Button next to each favorite movie */
   const removeFavorite = (e, movie) => {
     e.preventDefault();
     axios.delete(`https://cbu-pix-flix.herokuapp.com/users/${username}/remove/${movie._id}`,
