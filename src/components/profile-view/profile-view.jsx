@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 import axios from 'axios';
 
@@ -40,7 +41,7 @@ export function ProfileView(props) {
   /* this function will be added to an "Onclick" on the Remove Button next to each favorite movie */
   const removeFavorite = (e, movie) => {
     e.preventDefault();
-    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/${username}/remove/${movie._id}`,
+    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/${Username}/remove/${movie._id}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -54,7 +55,7 @@ export function ProfileView(props) {
 
   const handleDeregister = (e) => {
     e.preventDefault();
-    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/delete/${username}`,
+    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/delete/${localStorage.getItem('user')}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -66,5 +67,9 @@ export function ProfileView(props) {
         console.log(err);
       });
   }
-  return (<h1>Profile</h1>)
+  return (
+
+    <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
+
+  );
 }
