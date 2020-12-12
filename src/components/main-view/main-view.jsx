@@ -121,10 +121,12 @@ export class MainView extends React.Component {
 
 
   render() {
-    const { movies, selectedMovie, user, registered } = this.state;
+    const { movies, user, userData } = this.state;
 
     const logOutButton = !user ? '' :
       <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
+    const homeLink = !user ? '' : <Link to={'/'}>Home</Link>;
+    const profileLink = !user ? '' : <Link to={'/profile'}>{user}</Link>
 
     if (!movies) return <div className="main-view" />;
 
@@ -132,8 +134,8 @@ export class MainView extends React.Component {
 
       <Router>
         <div className="main-view">
-          <Link to={'/'}>Home</Link>
-          <Link to={'/profile'}>Profile</Link>
+          {homeLink} {profileLink}
+
           <Container fluid>
             <Row>
 
@@ -166,7 +168,7 @@ export class MainView extends React.Component {
                   m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name)).map(film => film.Title)} />
               }} />
 
-              <Route exact path="/profile" render={() => <ProfileView {...this.state.userData} updateUserInfo={this.updateUserInfo} onLoggedOut={this.onLoggedOut} />} />
+              <Route exact path="/profile" render={() => <ProfileView {...userData} updateUserInfo={this.updateUserInfo} onLoggedOut={this.onLoggedOut} />} />
             </Row>
 
             {logOutButton}
