@@ -72,7 +72,7 @@ export function ProfileView(props) {
   }
   return (
     <Form>
-      <h1>Update User Information</h1>
+      <h2>Update User Information</h2>
       <Form.Group controlId="formBasicUsername">
         <Form.Label>Username</Form.Label>
         <Form.Control type="text" placeholder="Enter New Username" value={username} onChange={e => setUsername(e.target.value)} />

@@ -132,7 +132,7 @@ export class MainView extends React.Component {
 
       <Router>
         <div className="main-view">
-          {homeLink} {profileLink}
+          <h1>MyFlix</h1>{homeLink} {profileLink}
 
           <Container fluid>
             <Row>
