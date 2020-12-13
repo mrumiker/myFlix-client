@@ -23,9 +23,7 @@ export class MainView extends React.Component {
 
     this.state = {
       movies: [],
-      selectedMovie: null,
       user: null,
-      registered: true,
       userData: {}
     };
   }
@@ -38,7 +36,6 @@ export class MainView extends React.Component {
         user
       });
       this.getMovies(accessToken);
-      this.getUserInfo(user, accessToken);
     }
   }
 
@@ -57,7 +54,6 @@ export class MainView extends React.Component {
   }
 
   getUserInfo(user, token) {
-    {/*Pass this data as a Prop to Profile View*/ }
     axios.get(`https://cbu-pix-flix.herokuapp.com/users/${user}`,
       {
         headers: { Authorization: `Bearer ${token}` }
@@ -72,8 +68,17 @@ export class MainView extends React.Component {
       });
   }
 
-  updateUserInfo = userData => {
-    this.setState({ userData });
+  populateFavorites(movies, userData) {
+    let favorites = [];
+
+    for (let i = 0; i < userData.Favorites.length; i++) {
+      for (let j = 0; j < movies.length; j++) {
+        if (userData.Favorites[i] === movies[j]._id) {
+          favorites.push(movies[j]);
+        }
+      }
+    }
+    return favorites;
   }
 
   onMovieClick(movie) {
@@ -85,7 +90,8 @@ export class MainView extends React.Component {
   onLoggedIn(authData) {
     console.log(authData);
     this.setState({
-      user: authData.user.Username
+      user: authData.user.Username,
+      userData: authData.user
     });
 
     localStorage.setItem('token', authData.token);
@@ -120,6 +126,8 @@ export class MainView extends React.Component {
 
   render() {
     const { movies, user, userData } = this.state;
+    console.log(user);
+    console.log(userData);
 
     const logOutButton = !user ? '' :
       <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
@@ -166,7 +174,7 @@ export class MainView extends React.Component {
                   m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name)).map(film => film.Title)} />
               }} />
 
-              <Route exact path="/profile" render={() => <ProfileView user={userData} updateUserInfo={this.updateUserInfo} onLoggedOut={this.onLoggedOut} />} />
+              <Route exact path="/profile" render={() => <ProfileView movies={movies} userData={userData} populateFavorites={this.populateFavorites} onLoggedOut={this.onLoggedOut} />} />
             </Row>
 
             {logOutButton}

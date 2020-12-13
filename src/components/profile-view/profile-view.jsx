@@ -8,16 +8,21 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import axios from 'axios';
 
 export function ProfileView(props) {
-  //console.log(props);
+  console.log(props);
+
+  let favoriteMovies = props.populateFavorites(props.movies, props.userData);
+  console.log(favoriteMovies);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(favoriteMovies);
 
   let user = localStorage.getItem('user');
   let token = localStorage.getItem('token');
+
+
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -101,5 +106,7 @@ export function ProfileView(props) {
         <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
       </ButtonGroup>
     </Form>
+
+
   )
 }
