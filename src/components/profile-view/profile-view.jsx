@@ -8,7 +8,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import axios from 'axios';
 
 export function ProfileView(props) {
-  console.log(props);
+  //console.log(props);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -16,21 +16,25 @@ export function ProfileView(props) {
   const [birthday, setBirthday] = useState('');
   const [favorites, setFavorites] = useState([]);
 
+  let user = localStorage.getItem('user');
   let token = localStorage.getItem('token');
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    axios.put(`https://cbu-pix-flix.herokuapp.com/users/${username}`,
+    axios.put(`https://cbu-pix-flix.herokuapp.com/users/${user}`,
       {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         Username: username,
         Password: password,
         Email: email,
         Birthday: birthday
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
         const data = response.data;
         localStorage.setItem('user', data.Username);
+        console.log(data);
       })
       .catch(err => {
         console.log(err);
@@ -54,7 +58,7 @@ export function ProfileView(props) {
 
   const handleDeregister = (e) => {
     e.preventDefault();
-    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/delete/${localStorage.getItem('user')}`,
+    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/delete/${user}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -89,10 +93,13 @@ export function ProfileView(props) {
         <Form.Control type="date" placeholder="Enter New Birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
       </Form.Group>
 
-      <Button variant="secondary" onClick={handleUpdate}>Update</Button><br />
-
-      <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
-
+      <ButtonGroup className="update-button">
+        <Button className="update-button" variant="secondary" onClick={handleUpdate}>Update</Button>
+      </ButtonGroup>
+      <br />
+      <ButtonGroup className="delete-button">
+        <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
+      </ButtonGroup>
     </Form>
   )
 }
