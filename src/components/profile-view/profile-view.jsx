@@ -9,25 +9,24 @@ import axios from 'axios';
 
 export function ProfileView(props) {
   console.log(props);
-  const { Username, Email, Birthday, Favorites } = props;
 
-  //const [username, setUsername] = useState(localStorage.getItem('user'));
-  //const [password, setPassword] = useState('');
-  //const [email, setEmail] = useState('');
-  //const [birthday, setBirthday] = useState('');
-  //const [favorites, setFavorites] = useState([]);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [favorites, setFavorites] = useState([]);
 
   let token = localStorage.getItem('token');
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    axios.put(`https://cbu-pix-flix.herokuapp.com/users/${Username}`,
+    axios.put(`https://cbu-pix-flix.herokuapp.com/users/${username}`,
       {
-        headers: { Authorization: `Bearer ${token}` },
-        Username,
-        Password,
-        Email,
-        Birthday
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday
       })
       .then(response => {
         const data = response.data;
@@ -68,8 +67,32 @@ export function ProfileView(props) {
       });
   }
   return (
+    <Form>
+      <h1>Update User Information</h1>
+      <Form.Group controlId="formBasicUsername">
+        <Form.Label>Username</Form.Label>
+        <Form.Control type="text" placeholder="Enter New Username" value={username} onChange={e => setUsername(e.target.value)} />
+      </Form.Group>
 
-    <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
+      <Form.Group controlId="formBasicPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control type="password" placeholder="Enter New Password" value={password} onChange={e => setPassword(e.target.value)} />
+      </Form.Group>
 
-  );
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label>Email</Form.Label>
+        <Form.Control type="email" placeholder="Enter New Email" value={email} onChange={e => setEmail(e.target.value)} />
+      </Form.Group>
+
+      <Form.Group controlId="formBasicBirthday">
+        <Form.Label>Birthday</Form.Label>
+        <Form.Control type="date" placeholder="Enter New Birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
+      </Form.Group>
+
+      <Button variant="secondary" onClick={handleUpdate}>Update</Button><br />
+
+      <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
+
+    </Form>
+  )
 }

@@ -66,16 +66,14 @@ export class MainView extends React.Component {
         this.setState({
           userData: response.data
         })
-        return response.data;
       })
       .catch(err => {
         console.log(err);
-        return null;
       });
   }
 
-  updateUserInfo = user => {
-    this.setState({ user });
+  updateUserInfo = userData => {
+    this.setState({ userData });
   }
 
   onMovieClick(movie) {
@@ -168,7 +166,7 @@ export class MainView extends React.Component {
                   m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name)).map(film => film.Title)} />
               }} />
 
-              <Route exact path="/profile" render={() => <ProfileView {...userData} updateUserInfo={this.updateUserInfo} onLoggedOut={this.onLoggedOut} />} />
+              <Route exact path="/profile" render={() => <ProfileView user={userData} updateUserInfo={this.updateUserInfo} onLoggedOut={this.onLoggedOut} />} />
             </Row>
 
             {logOutButton}
