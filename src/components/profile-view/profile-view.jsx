@@ -21,7 +21,8 @@ export function ProfileView(props) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [favorites, setFavorites] = useState(props.favorites);
+
+  let favorites = props.favorites;
 
   let user = localStorage.getItem('user');
   let token = localStorage.getItem('token');
@@ -49,14 +50,15 @@ export function ProfileView(props) {
   };
 
   /* this function will be added to an "Onclick" on the Remove Button next to each favorite movie */
-  const removeFavorite = (e, movie) => {
+  const handleRemoveFavorite = (e, movie) => {
     e.preventDefault();
-    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/${Username}/remove/${movie._id}`,
+    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/${username}/remove/${movie._id}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        setFavorites(response.data.Favorites);
+        console.log(response.data.Favorites);
+        props.getUserInfo(user, token);
       })
       .catch(err => {
         console.log(err);
@@ -115,7 +117,7 @@ export function ProfileView(props) {
             <Col className="movie-column" key={m._id} xs={12} sm={6} md={4} lg={3}>
               <MovieCard key={m._id} movie={m} />
               <br />
-              <Button style={{ width: '16rem' }} className="delete-favorite-button" variant="outline-danger">Delete from Favorites</Button>
+              <Button style={{ width: '16rem' }} className="delete-favorite-button" onClick={(e) => handleRemoveFavorite(e, m)} variant="outline-danger">Delete from Favorites</Button>
 
             </Col>))}
         </Row>

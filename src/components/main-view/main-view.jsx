@@ -30,6 +30,7 @@ export class MainView extends React.Component {
 
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
+    console.log("Component Did Mount");
     if (accessToken !== null) {
       const user = localStorage.getItem('user');
       this.setState({
@@ -37,6 +38,7 @@ export class MainView extends React.Component {
       });
       this.getMovies(accessToken);
       this.getUserInfo(user, accessToken);
+
     }
   }
 
@@ -54,7 +56,7 @@ export class MainView extends React.Component {
       });
   }
 
-  getUserInfo(user, token) {
+  getUserInfo = (user, token) => {
     axios.get(`https://cbu-pix-flix.herokuapp.com/users/${user}`,
       {
         headers: { Authorization: `Bearer ${token}` }
@@ -127,8 +129,6 @@ export class MainView extends React.Component {
 
   render() {
     const { movies, user, userData } = this.state;
-    console.log(user);
-    console.log(userData);
 
     const logOutButton = !user ? '' :
       <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
@@ -175,7 +175,7 @@ export class MainView extends React.Component {
                   m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name)).map(film => film.Title)} />
               }} />
 
-              <Route exact path="/profile" render={() => <ProfileView movies={movies} userData={userData} favorites={this.populateFavorites(movies, userData)} onLoggedOut={this.onLoggedOut} />} />
+              <Route exact path="/profile" render={() => <ProfileView movies={movies} userData={userData} favorites={this.populateFavorites(movies, userData)} getUserInfo={this.getUserInfo} onLoggedOut={this.onLoggedOut} />} />
             </Row>
 
             {logOutButton}
