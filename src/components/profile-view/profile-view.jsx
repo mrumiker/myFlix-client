@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import './profile-view.scss';
+
+import { MovieCard } from '../movie-card/movie-card';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import axios from 'axios';
 
@@ -76,37 +83,53 @@ export function ProfileView(props) {
       });
   }
   return (
-    <Form>
-      <h2>Update User Information</h2>
-      <Form.Group controlId="formBasicUsername">
-        <Form.Label>Username</Form.Label>
-        <Form.Control type="text" placeholder="Enter New Username" value={username} onChange={e => setUsername(e.target.value)} />
-      </Form.Group>
 
-      <Form.Group controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Enter New Password" value={password} onChange={e => setPassword(e.target.value)} />
-      </Form.Group>
+    <React.Fragment>
+      <Form>
+        <h2>Update User Information</h2>
+        <Form.Group controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control type="text" placeholder="Enter New Username" value={username} onChange={e => setUsername(e.target.value)} />
+        </Form.Group>
 
-      <Form.Group controlId="formBasicEmail">
-        <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="Enter New Email" value={email} onChange={e => setEmail(e.target.value)} />
-      </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Enter New Password" value={password} onChange={e => setPassword(e.target.value)} />
+        </Form.Group>
 
-      <Form.Group controlId="formBasicBirthday">
-        <Form.Label>Birthday</Form.Label>
-        <Form.Control type="date" placeholder="Enter New Birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
-      </Form.Group>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter New Email" value={email} onChange={e => setEmail(e.target.value)} />
+        </Form.Group>
 
-      <ButtonGroup className="update-button">
-        <Button className="update-button" variant="secondary" onClick={handleUpdate}>Update</Button>
-      </ButtonGroup>
+        <Form.Group controlId="formBasicBirthday">
+          <Form.Label>Birthday</Form.Label>
+          <Form.Control type="date" placeholder="Enter New Birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
+        </Form.Group>
+
+        <ButtonGroup className="update-button">
+          <Button variant="secondary" onClick={handleUpdate}>Update</Button>
+        </ButtonGroup>
+
+      </Form>
       <br />
+      <Container className="favorite-movies" fluid>
+        <h2>Favorite Movies</h2>
+        <Row>
+          {favorites.map(m => (
+            <Col key={m._id} xs={12} sm={6} md={4} lg={3}>
+              <MovieCard key={m._id} movie={m} />
+              <br />
+            </Col>))}
+        </Row>
+      </Container>
+
+
       <ButtonGroup className="delete-button">
         <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
       </ButtonGroup>
-    </Form>
 
+    </React.Fragment>
 
   )
 }
