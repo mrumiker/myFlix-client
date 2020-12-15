@@ -1,7 +1,16 @@
-.update-button, .delete-button {
+* {
+  box-sizing: border-box
+} 
+
+.update-button, .delete-account-button {
   margin: 10px;
 }
 
 .favorite-movies {
   margin: 20px;
 }
+
+.movie-column {
+  justify-content: center;
+}
+

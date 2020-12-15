@@ -117,15 +117,17 @@ export function ProfileView(props) {
         <h2>Favorite Movies</h2>
         <Row>
           {favorites.map(m => (
-            <Col key={m._id} xs={12} sm={6} md={4} lg={3}>
+            <Col className="movie-column" key={m._id} xs={12} sm={6} md={4} lg={3}>
               <MovieCard key={m._id} movie={m} />
               <br />
+              <Button style={{ width: '16rem' }} className="delete-favorite-button" variant="outline-danger">Delete from Favorites</Button>
+
             </Col>))}
         </Row>
       </Container>
 
 
-      <ButtonGroup className="delete-button">
+      <ButtonGroup className="delete-account-button">
         <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
       </ButtonGroup>
 
