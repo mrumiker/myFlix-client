@@ -17,19 +17,14 @@ import axios from 'axios';
 export function ProfileView(props) {
   console.log(props);
 
-  let favoriteMovies = props.populateFavorites(props.movies, props.userData);
-  console.log(favoriteMovies);
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [favorites, setFavorites] = useState(favoriteMovies);
+  const [favorites, setFavorites] = useState(props.favorites);
 
   let user = localStorage.getItem('user');
   let token = localStorage.getItem('token');
-
-
 
   const handleUpdate = (e) => {
     e.preventDefault();

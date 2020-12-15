@@ -36,6 +36,7 @@ export class MainView extends React.Component {
         user
       });
       this.getMovies(accessToken);
+      this.getUserInfo(user, accessToken);
     }
   }
 
@@ -174,7 +175,7 @@ export class MainView extends React.Component {
                   m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name)).map(film => film.Title)} />
               }} />
 
-              <Route exact path="/profile" render={() => <ProfileView movies={movies} userData={userData} populateFavorites={this.populateFavorites} onLoggedOut={this.onLoggedOut} />} />
+              <Route exact path="/profile" render={() => <ProfileView movies={movies} userData={userData} favorites={this.populateFavorites(movies, userData)} onLoggedOut={this.onLoggedOut} />} />
             </Row>
 
             {logOutButton}
