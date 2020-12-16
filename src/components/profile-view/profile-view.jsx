@@ -11,11 +11,11 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Alert from 'react-bootstrap/Alert';
 
 import axios from 'axios';
 
 export function ProfileView(props) {
-  console.log(props);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -42,14 +42,12 @@ export function ProfileView(props) {
       .then(response => {
         const data = response.data;
         localStorage.setItem('user', data.Username);
-        console.log(data);
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  /* this function will be added to an "Onclick" on the Remove Button next to each favorite movie */
   const handleRemoveFavorite = (e, movie) => {
     e.preventDefault();
     axios.delete(`https://cbu-pix-flix.herokuapp.com/users/${username}/remove/${movie._id}`,
@@ -57,7 +55,6 @@ export function ProfileView(props) {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        console.log(response.data.Favorites);
         props.getUserInfo(user, token);
       })
       .catch(err => {
@@ -72,13 +69,13 @@ export function ProfileView(props) {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        console.log(response);
         props.onLoggedOut();
       })
       .catch(err => {
         console.log(err);
       });
   }
+
   return (
 
     <React.Fragment>

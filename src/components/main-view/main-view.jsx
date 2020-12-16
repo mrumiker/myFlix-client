@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import './main-view.scss';
+
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { LoginView } from '../login-view/login-view';
@@ -15,6 +17,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar'
 
 export class MainView extends React.Component {
 
@@ -130,10 +134,22 @@ export class MainView extends React.Component {
   render() {
     const { movies, user, userData } = this.state;
 
-    const logOutButton = !user ? '' :
-      <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
-    const homeLink = !user ? '' : <Link to={'/'}>Home</Link>;
-    const profileLink = !user ? '' : <Link to={'/profile'}>{user}</Link>
+    const logOutButton = <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
+
+    const profileLink = <Link className="profile-link" to={'/profile'}>{user}</Link>
+
+    const Navigation = !user ? '' :
+      <Navbar className="navigation-bar" bg="dark" variant="dark">
+        <Navbar.Brand className="myflix-brand" href='/'>myFlix</Navbar.Brand>
+        <Navbar.Collapse className='justify-content-end'>
+          <Navbar.Text >
+            {profileLink}
+          </Navbar.Text>
+          <Navbar.Text>
+            {logOutButton}
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Navbar>
 
     if (!movies) return <div className="main-view" />;
 
@@ -141,9 +157,10 @@ export class MainView extends React.Component {
 
       <Router>
         <div className="main-view">
-          <h1>MyFlix</h1>{homeLink} {profileLink}
 
-          <Container fluid>
+          {Navigation}
+
+          <Container className="page-container" fluid>
             <Row>
 
               <Route exact path="/" render={() => {
@@ -178,7 +195,7 @@ export class MainView extends React.Component {
               <Route exact path="/profile" render={() => <ProfileView movies={movies} userData={userData} favorites={this.populateFavorites(movies, userData)} getUserInfo={this.getUserInfo} onLoggedOut={this.onLoggedOut} />} />
             </Row>
 
-            {logOutButton}
+
 
           </Container>
         </div>
