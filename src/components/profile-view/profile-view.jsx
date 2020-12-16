@@ -11,7 +11,6 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Alert from 'react-bootstrap/Alert';
 
 import axios from 'axios';
 
@@ -129,3 +128,11 @@ export function ProfileView(props) {
 
   )
 }
+
+ProfileView.proptypes = {
+  favorites: PropTypes.array.isRequired,
+  getUserInfo: PropTypes.func.isRequired,
+  onLoggedOut: PropTypes.func.isRequired
+}
+
+
