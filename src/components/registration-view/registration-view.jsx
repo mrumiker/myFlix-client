@@ -45,17 +45,20 @@ export function RegistrationView(props) {
 
       <Form.Group controlId="formBasicUsername">
         <Form.Label>Username</Form.Label>
-        <Form.Control type="text" placeholder="Enter Username" value={username} onChange={e => setUsername(e.target.value)} />
+        <Form.Control type="text" placeholder="Enter Username" value={username} onChange={e => setUsername(e.target.value)} required />
       </Form.Group>
 
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Enter Password" value={password} onChange={e => setPassword(e.target.value)} />
+        <Form.Control type="password" placeholder="Enter Password" value={password} onChange={e => setPassword(e.target.value)} required />
       </Form.Group>
 
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="joe@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+        <Form.Control type="email" placeholder="joe@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
       </Form.Group>
 
       <Form.Group controlId="formBasicBirthday">
