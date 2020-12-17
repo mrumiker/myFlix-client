@@ -82,17 +82,17 @@ export function ProfileView(props) {
         <h2>Update User Information</h2>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Username</Form.Label>
-          <Form.Control type="text" placeholder="Enter New Username" value={username} onChange={e => setUsername(e.target.value)} />
+          <Form.Control type="text" placeholder="Enter New Username" value={username} onChange={e => setUsername(e.target.value)} required />
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Enter New Password" value={password} onChange={e => setPassword(e.target.value)} />
+          <Form.Control type="password" placeholder="Enter New Password" value={password} onChange={e => setPassword(e.target.value)} required />
         </Form.Group>
 
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Enter New Email" value={email} onChange={e => setEmail(e.target.value)} />
+          <Form.Control type="email" placeholder="Enter New Email" value={email} onChange={e => setEmail(e.target.value)} required />
         </Form.Group>
 
         <Form.Group controlId="formBasicBirthday">
