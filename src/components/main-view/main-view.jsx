@@ -133,12 +133,14 @@ export class MainView extends React.Component {
   render() {
     const { movies, user, userData } = this.state;
 
-    const logOutButton = <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
+    const logOutButton = !user ? '' :
+      <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
 
-    const profileLink = <Link className="profile-link" to={'/profile'}>{user}</Link>
+    const profileLink = !user ? '' :
+      <Link className="profile-link" to={'/profile'}>{user}</Link>
 
-    const Navigation = !user ? '' :
-      <Navbar className="navigation-bar" bg="dark" variant="dark">
+    const Navigation =
+      <Navbar className="navigation-bar" fixed="top" bg="dark" variant="dark">
         <Navbar.Brand className="myflix-brand" href='/'>myFlix</Navbar.Brand>
         <Navbar.Collapse className='justify-content-end'>
           <Navbar.Text >
