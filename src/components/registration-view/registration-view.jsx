@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+import axios from 'axios';
+
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -12,10 +14,29 @@ export function RegistrationView(props) {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    console.log(username, password, email, birthday);
-    //post to 'users' in database
-    props.onLoggedIn(username);
-    props.toggleRegistered(true);
+    axios.post('https://cbu-pix-flix.herokuapp.com/users', {
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthday: birthday
+    })
+      .then(function () {
+        axios.post('https://cbu-pix-flix.herokuapp.com/login', {
+          Username: username,
+          Password: password
+        })
+          .then(response => {
+            const data = response.data;
+            props.onLoggedIn(data);
+            window.open('/', '_self');
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
@@ -24,17 +45,20 @@ export function RegistrationView(props) {
 
       <Form.Group controlId="formBasicUsername">
         <Form.Label>Username</Form.Label>
-        <Form.Control type="text" placeholder="Enter Username" value={username} onChange={e => setUsername(e.target.value)} />
+        <Form.Control type="text" placeholder="Enter Username" value={username} onChange={e => setUsername(e.target.value)} required />
       </Form.Group>
 
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Enter Password" value={password} onChange={e => setPassword(e.target.value)} />
+        <Form.Control type="password" placeholder="Enter Password" value={password} onChange={e => setPassword(e.target.value)} required />
       </Form.Group>
 
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="joe@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+        <Form.Control type="email" placeholder="joe@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
       </Form.Group>
 
       <Form.Group controlId="formBasicBirthday">
@@ -51,6 +75,5 @@ export function RegistrationView(props) {
 }
 
 RegistrationView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
-  toggleRegistered: PropTypes.func.isRequired
+  onLoggedIn: PropTypes.func.isRequired
 };
