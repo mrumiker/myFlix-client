@@ -43,7 +43,10 @@ export class DirectorView extends React.Component {
               Films
             </Card.Header>
             <ListGroup variant="flush">
-              {films.map(film => <ListGroup.Item key={film}>{film}</ListGroup.Item>)}
+              {films.map(film => <ListGroup.Item key={film._id}><Link to={`/movies/${film._id}`}>
+                <Button variant="link">{film.Title}</Button>
+              </Link>
+              </ListGroup.Item>)}
             </ListGroup>
 
             <Link to="/">
@@ -73,7 +76,10 @@ export class DirectorView extends React.Component {
               Films
             </Card.Header>
             <ListGroup variant="flush">
-              {films.map(film => <ListGroup.Item key={film}>{film}</ListGroup.Item>)}
+              {films.map(film => <ListGroup.Item key={film._id}><Link to={`/movies/${film._id}`}>
+                <Button variant="link">{film.Title}</Button>
+              </Link>
+              </ListGroup.Item>)}
             </ListGroup>
 
             <Link to="/">
