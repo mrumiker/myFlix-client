@@ -20,7 +20,6 @@ import { ProfileView } from '../profile-view/profile-view';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
 
@@ -30,7 +29,6 @@ class MainView extends React.Component {
     super();
 
     this.state = {
-      movies: [],
       user: null,
       userData: {}
     };
@@ -167,37 +165,34 @@ class MainView extends React.Component {
           {Navigation}
 
           <Container className="page-container" fluid>
-            <Row>
-
-              <Route exact path="/" render={() => {
-                if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
-
-                return <MoviesList movies={movies} />;
 
 
+            <Route exact path="/" render={() => {
+              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
 
-              }
-              } />
+              return <MoviesList movies={movies} />;
+            }
+            } />
 
-              <Route path="/register" render={() => <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />} />
+            <Route path="/register" render={() => <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />} />
 
-              <Route path="/movies/:movieId" render={({ match }) =>
-                <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
+            <Route path="/movies/:movieId" render={({ match }) =>
+              <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
 
-              <Route path="/directors/:name" render={({ match }) => {
-                if (!movies) return <div className="main-view" />
-                return <DirectorView director={movies.find(m =>
-                  m.Director.Name === match.params.name).Director} films={(movies.filter(m => m.Director.Name === match.params.name))} />
-              }} />
+            <Route path="/directors/:name" render={({ match }) => {
+              if (!movies) return <div className="main-view" />
+              return <DirectorView director={movies.find(m =>
+                m.Director.Name === match.params.name).Director} films={(movies.filter(m => m.Director.Name === match.params.name))} />
+            }} />
 
-              <Route path="/genres/:name" render={({ match }) => {
-                if (!movies) return <div className="main-view" />
-                return <GenreView genre={movies.find(m =>
-                  m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name))} />
-              }} />
+            <Route path="/genres/:name" render={({ match }) => {
+              if (!movies) return <div className="main-view" />
+              return <GenreView genre={movies.find(m =>
+                m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name))} />
+            }} />
 
-              <Route path="/profile" render={() => <ProfileView userData={userData} favorites={this.populateFavorites(movies, userData)} getUserInfo={this.getUserInfo} onLoggedOut={this.onLoggedOut} />} />
-            </Row>
+            <Route path="/profile" render={() => <ProfileView userData={userData} favorites={this.populateFavorites(movies, userData)} getUserInfo={this.getUserInfo} onLoggedOut={this.onLoggedOut} />} />
+
           </Container>
         </div>
       </Router>
