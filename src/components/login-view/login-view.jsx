@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import './login-view.scss'
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
@@ -32,7 +34,7 @@ export function LoginView(props) {
 
   return (
 
-    <Form>
+    <Form className="login-form">
 
       <Form.Group controlId="formBasicUsername">
         <Form.Label>Username</Form.Label>
@@ -57,5 +59,5 @@ export function LoginView(props) {
 }
 
 LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
+  onLoggedIn: PropTypes.func.isRequired
 };

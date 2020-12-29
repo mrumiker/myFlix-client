@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 
 import './movies-list.scss';
 
@@ -38,3 +40,8 @@ function MoviesList(props) {
 }
 
 export default connect(mapStateToProps)(MoviesList);
+
+MoviesList.propTypes = {
+  movies: PropTypes.array,
+  visibilityFilter: PropTypes.string
+};

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import './registration-view.scss'
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
@@ -41,7 +43,7 @@ export function RegistrationView(props) {
 
   return (
 
-    <Form>
+    <Form className="login-form">
 
       <Form.Group controlId="formBasicUsername">
         <Form.Label>Username</Form.Label>

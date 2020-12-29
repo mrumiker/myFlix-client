@@ -19,7 +19,6 @@ import { GenreView } from '../genre-view/genre-view';
 import { ProfileView } from '../profile-view/profile-view';
 
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
 
@@ -36,7 +35,6 @@ class MainView extends React.Component {
 
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
-    console.log("Component Did Mount");
     if (accessToken !== null) {
       const user = localStorage.getItem('user');
       this.setState({
@@ -44,7 +42,6 @@ class MainView extends React.Component {
       });
       this.getMovies(accessToken);
       this.getUserInfo(user, accessToken);
-
     }
   }
 
