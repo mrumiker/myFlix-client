@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import { setMovies } from '../../actions/actions';
+import { setMovies, setUser } from '../../actions/actions';
 
 import MoviesList from '../movies-list/movies-list';
 
@@ -85,32 +85,15 @@ class MainView extends React.Component {
     return favorites;
   }
 
-  onMovieClick(movie) {
-    this.setState({
-      selectedMovie: movie
-    });
-  }
-
   onLoggedIn(authData) {
+    this.props.setUser(authData.user.Username);
     this.setState({
-      user: authData.user.Username,
       userData: authData.user
     });
-
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token);
-  }
-
-  onRegistered(authData) {
-    console.log(authData);
-    this.setState({
-      user: authData.Username
-    });
-
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('user', authData.Username);
-    this.getMovies(authData.token);
+    console.log('onLoggedIn called')
   }
 
   onLoggedOut() {
@@ -119,19 +102,11 @@ class MainView extends React.Component {
     window.open('/', '_self');
   }
 
-  toggleRegistered(registered) {
-    this.setState({
-      registered
-    });
-  }
-
-
-
   render() {
 
-    let { movies } = this.props;
+    let { movies, user } = this.props;
 
-    let { user, userData } = this.state;
+    let { userData } = this.state;
 
     const logOutButton = !user ? '' :
       <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
@@ -198,7 +173,7 @@ class MainView extends React.Component {
 }
 
 let mapStateToProps = state => {
-  return { movies: state.movies }
+  return { movies: state.movies, user: state.user }
 }
 
-export default connect(mapStateToProps, { setMovies })(MainView);
+export default connect(mapStateToProps, { setMovies, setUser })(MainView);
