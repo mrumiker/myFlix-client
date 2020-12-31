@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import Config from '../../config';
 
 import './registration-view.scss'
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import axios from 'axios';
 
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
@@ -16,14 +17,14 @@ export function RegistrationView(props) {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    axios.post('https://cbu-pix-flix.herokuapp.com/users', {
+    axios.post(`${Config.API_URL}/users`, {
       Username: username,
       Password: password,
       Email: email,
       Birthday: birthday
     })
       .then(function () {
-        axios.post('https://cbu-pix-flix.herokuapp.com/login', {
+        axios.post(`${Config.API_URL}/login`, {
           Username: username,
           Password: password
         })
@@ -32,13 +33,9 @@ export function RegistrationView(props) {
             props.onLoggedIn(data);
             window.open('/', '_self');
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(err => console.log(err));
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => console.log(err));
   };
 
   return (

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Config from '../../config';
 
 import './profile-view.scss';
 
@@ -28,7 +29,7 @@ export function ProfileView(props) {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    axios.put(`https://cbu-pix-flix.herokuapp.com/users/${user}`,
+    axios.put(`${Config.API_URL}/users/${user}`,
       {
         Username: username,
         Password: password,
@@ -42,37 +43,27 @@ export function ProfileView(props) {
         const data = response.data;
         localStorage.setItem('user', data.Username);
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => console.log(err));
   };
 
   const handleRemoveFavorite = (e, movie) => {
     e.preventDefault();
-    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/${username}/remove/${movie._id}`,
+    axios.delete(`${Config.API_URL}/users/${user}/remove/${movie._id}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(response => {
-        props.getUserInfo(user, token);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      .then(() => props.getUserInfo(user, token))
+      .catch(err => console.log(err));
   }
 
   const handleDeregister = (e) => {
     e.preventDefault();
-    axios.delete(`https://cbu-pix-flix.herokuapp.com/users/delete/${user}`,
+    axios.delete(`${Config.API_URL}/users/delete/${user}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(response => {
-        props.onLoggedOut();
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      .then(() => props.onLoggedOut())
+      .catch(err => console.log(err));
   }
 
   return (

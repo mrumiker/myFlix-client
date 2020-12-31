@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Config from '../../config';
 
 import './login-view.scss'
 
@@ -14,17 +15,15 @@ export function LoginView(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('https://cbu-pix-flix.herokuapp.com/login', {
+    axios.post(`${Config.API_URL}/login`, {
       Username: username,
       Password: password
     })
       .then(response => {
         const data = response.data;
-        props.onLoggedIn(data);
+        props.onLoggedIn(data); //look at serialization on the back end
       })
-      .catch(e => {
-        console.log('No such user')
-      });
+      .catch(e => console.log('No such user'));
   };
 
   const handleRegister = (e) => {

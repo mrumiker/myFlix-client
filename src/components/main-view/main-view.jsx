@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Config from '../../config';
 
 import './main-view.scss';
 
@@ -28,37 +29,32 @@ class MainView extends React.Component {
     super();
 
     this.state = {
-      user: null,
       userData: {}
     };
   }
 
   componentDidMount() {
-    let accessToken = localStorage.getItem('token');
+    const accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
       const user = localStorage.getItem('user');
-      this.setState({
-        user
-      });
+      this.props.setUser(user);
       this.getMovies(accessToken);
       this.getUserInfo(user, accessToken);
     }
   }
 
   getMovies(token) {
-    axios.get('https://cbu-pix-flix.herokuapp.com/movies', {
+    axios.get(`${Config.API_URL}/movies`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         this.props.setMovies(response.data);
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch(err => console.log(err));
   }
 
   getUserInfo = (user, token) => {
-    axios.get(`https://cbu-pix-flix.herokuapp.com/users/${user}`,
+    axios.get(`${Config.API_URL}/users/${user}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -67,21 +63,26 @@ class MainView extends React.Component {
           userData: response.data
         })
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => console.log(err));
   }
 
   populateFavorites(movies, userData) {
-    let favorites = [];
+    console.time();
+    let favorites = movies.filter(m => userData.Favorites.includes(m._id));
+    console.timeEnd();
+    console.log(favorites);
 
+    console.time();
+    favorites = [];
     for (let i = 0; i < userData.Favorites.length; i++) {
       for (let j = 0; j < movies.length; j++) {
         if (userData.Favorites[i] === movies[j]._id) {
           favorites.push(movies[j]);
+          break;
         }
       }
     }
+    console.timeEnd();
     return favorites;
   }
 
@@ -93,13 +94,12 @@ class MainView extends React.Component {
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token);
-    console.log('onLoggedIn called')
   }
 
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.open('/', '_self');
+    window.open('/', '_self'); //Check out history in React Router
   }
 
   render() {
