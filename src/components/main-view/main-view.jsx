@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import { setMovies, setUser } from '../../actions/actions';
+import { setMovies, setUser, setFaves } from '../../actions/actions';
 
 import MoviesList from '../movies-list/movies-list';
 
@@ -28,9 +28,7 @@ class MainView extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      userData: {}
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -59,24 +57,22 @@ class MainView extends React.Component {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        this.setState({
-          userData: response.data
-        })
+        this.props.setFaves(response.data.Favorites)
       })
       .catch(err => console.log(err));
   }
 
-  populateFavorites(movies, userData) {
+  populateFavorites(movies, faves) {
     console.time();
-    let favorites = movies.filter(m => userData.Favorites.includes(m._id));
+    let favorites = movies.filter(m => faves.includes(m._id));
     console.timeEnd();
     console.log(favorites);
 
     console.time();
     favorites = [];
-    for (let i = 0; i < userData.Favorites.length; i++) {
+    for (let i = 0; i < faves.length; i++) {
       for (let j = 0; j < movies.length; j++) {
-        if (userData.Favorites[i] === movies[j]._id) {
+        if (faves[i] === movies[j]._id) {
           favorites.push(movies[j]);
           break;
         }
@@ -88,9 +84,7 @@ class MainView extends React.Component {
 
   onLoggedIn(authData) {
     this.props.setUser(authData.user.Username);
-    this.setState({
-      userData: authData.user
-    });
+    this.props.setFaves(authData.user.Favorites);
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token);
@@ -104,9 +98,7 @@ class MainView extends React.Component {
 
   render() {
 
-    let { movies, user } = this.props;
-
-    let { userData } = this.state;
+    let { movies, user, favorites } = this.props;
 
     const logOutButton = !user ? '' :
       <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
@@ -163,7 +155,7 @@ class MainView extends React.Component {
                 m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name))} />
             }} />
 
-            <Route path="/profile" render={() => <ProfileView userData={userData} favorites={this.populateFavorites(movies, userData)} getUserInfo={this.getUserInfo} onLoggedOut={this.onLoggedOut} />} />
+            <Route path="/profile" render={() => <ProfileView favorites={this.populateFavorites(movies, favorites)} getUserInfo={this.getUserInfo} onLoggedOut={this.onLoggedOut} />} />
 
           </Container>
         </div>
@@ -173,7 +165,7 @@ class MainView extends React.Component {
 }
 
 let mapStateToProps = state => {
-  return { movies: state.movies, user: state.user }
+  return { movies: state.movies, user: state.user, favorites: state.favorites }
 }
 
-export default connect(mapStateToProps, { setMovies, setUser })(MainView);
+export default connect(mapStateToProps, { setMovies, setUser, setFaves })(MainView);
