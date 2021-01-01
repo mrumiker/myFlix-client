@@ -22,7 +22,7 @@ export function LoginView(props) {
       .then(response => {
         props.onLoggedIn(response.data.user.Username, response.data.token, response.data.user.Favorites); //look at serialization on the back end
       })
-      .catch(e => console.log(e));
+      .catch(err => console.log(err));
   };
 
   const handleRegister = (e) => {

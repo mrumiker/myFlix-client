@@ -141,7 +141,7 @@ class MainView extends React.Component {
             <Route path="/register" render={() => <RegistrationView onLoggedIn={(u, t, f) => this.onLoggedIn(u, t, f)} />} />
 
             <Route path="/movies/:movieId" render={({ match }) =>
-              <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
+              <MovieView movie={movies.find(m => m._id === match.params.movieId)} favorites={favorites} getUserInfo={this.getUserInfo} />} />
 
             <Route path="/directors/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />

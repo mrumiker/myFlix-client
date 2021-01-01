@@ -2,7 +2,9 @@
   box-sizing: border-box
 } 
 
-.update-button, .delete-account-button {
+.update-button, 
+.delete-account-button{
+  
   margin: 10px;
 }
 
@@ -12,5 +14,6 @@
 
 .movie-column {
   justify-content: center;
+  margin: 15px 0;
 }
 

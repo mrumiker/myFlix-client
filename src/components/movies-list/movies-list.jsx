@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-
 import './movies-list.scss';
 
 import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
