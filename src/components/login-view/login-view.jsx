@@ -20,10 +20,9 @@ export function LoginView(props) {
       Password: password
     })
       .then(response => {
-        const data = response.data;
-        props.onLoggedIn(data); //look at serialization on the back end
+        props.onLoggedIn(response.data.user.Username, response.data.token, response.data.user.Favorites); //look at serialization on the back end
       })
-      .catch(e => console.log('No such user'));
+      .catch(e => console.log(e));
   };
 
   const handleRegister = (e) => {

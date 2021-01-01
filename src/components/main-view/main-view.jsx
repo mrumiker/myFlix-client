@@ -82,12 +82,12 @@ class MainView extends React.Component {
     return favorites;
   }
 
-  onLoggedIn(authData) {
-    this.props.setUser(authData.user.Username);
-    this.props.setFaves(authData.user.Favorites);
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('user', authData.user.Username);
-    this.getMovies(authData.token);
+  onLoggedIn(username, token, faves) {
+    this.props.setUser(username);
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', username);
+    this.props.setFaves(faves);
+    this.getMovies(token);
   }
 
   onLoggedOut() {
@@ -132,13 +132,13 @@ class MainView extends React.Component {
 
 
             <Route exact path="/" render={() => {
-              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+              if (!user) return <LoginView onLoggedIn={(u, t, f) => this.onLoggedIn(u, t, f)} />;
 
               return <MoviesList movies={movies} />;
             }
             } />
 
-            <Route path="/register" render={() => <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />} />
+            <Route path="/register" render={() => <RegistrationView onLoggedIn={(u, t, f) => this.onLoggedIn(u, t, f)} />} />
 
             <Route path="/movies/:movieId" render={({ match }) =>
               <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />

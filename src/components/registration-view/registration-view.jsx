@@ -29,8 +29,7 @@ export function RegistrationView(props) {
           Password: password
         })
           .then(response => {
-            const data = response.data;
-            props.onLoggedIn(data);
+            props.onLoggedIn(response.data.user.Username, response.data.token, response.data.user.Favorites);
             window.open('/', '_self');
           })
           .catch(err => console.log(err));
