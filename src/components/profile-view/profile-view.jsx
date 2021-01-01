@@ -40,8 +40,7 @@ export function ProfileView(props) {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        const data = response.data;
-        localStorage.setItem('user', data.Username);
+        localStorage.setItem('user', response.data.Username);
       })
       .catch(err => console.log(err));
   };
@@ -69,7 +68,21 @@ export function ProfileView(props) {
   return (
 
     <React.Fragment>
-      <Form>
+
+      <Container className="favorite-movies" fluid>
+        <h2>Favorite Movies</h2>
+        <Row>
+          {favorites.map(m => (
+            <Col className="movie-column" key={m._id} xs={12} sm={6} md={4} lg={3}>
+              <MovieCard key={m._id} movie={m} />
+              <br />
+              <Button style={{ width: '16rem' }} className="delete-favorite-button" onClick={(e) => handleRemoveFavorite(e, m)} variant="outline-danger">Delete from Favorites</Button>
+
+            </Col>))}
+        </Row>
+      </Container>
+      <br />
+      <Form className="update-form">
         <h2>Update User Information</h2>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Username</Form.Label>
@@ -97,19 +110,6 @@ export function ProfileView(props) {
 
       </Form>
       <br />
-      <Container className="favorite-movies" fluid>
-        <h2>Favorite Movies</h2>
-        <Row>
-          {favorites.map(m => (
-            <Col className="movie-column" key={m._id} xs={12} sm={6} md={4} lg={3}>
-              <MovieCard key={m._id} movie={m} />
-              <br />
-              <Button style={{ width: '16rem' }} className="delete-favorite-button" onClick={(e) => handleRemoveFavorite(e, m)} variant="outline-danger">Delete from Favorites</Button>
-
-            </Col>))}
-        </Row>
-      </Container>
-
 
       <ButtonGroup className="delete-account-button">
         <Button variant="danger" onClick={handleDeregister}>Delete Account</Button>
