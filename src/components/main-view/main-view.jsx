@@ -63,13 +63,8 @@ class MainView extends React.Component {
   }
 
   populateFavorites(movies, faves) {
-    console.time();
-    let favorites = movies.filter(m => faves.includes(m._id));
-    console.timeEnd();
-    console.log(favorites);
 
-    console.time();
-    favorites = [];
+    let favorites = [];
     for (let i = 0; i < faves.length; i++) {
       for (let j = 0; j < movies.length; j++) {
         if (faves[i] === movies[j]._id) {
@@ -78,7 +73,6 @@ class MainView extends React.Component {
         }
       }
     }
-    console.timeEnd();
     return favorites;
   }
 
