@@ -12,6 +12,10 @@ export class DirectorView extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   render() {
     const { director, films } = this.props;
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Config from '../../config';
 
@@ -21,6 +21,10 @@ export function ProfileView(props) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, []);
 
   let favorites = props.favorites;
 

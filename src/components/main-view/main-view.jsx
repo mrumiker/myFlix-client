@@ -38,6 +38,7 @@ class MainView extends React.Component {
       this.props.setUser(user);
       this.getMovies(accessToken);
       this.getUserInfo(user, accessToken);
+      window.scrollTo(0, 0);
     }
   }
 

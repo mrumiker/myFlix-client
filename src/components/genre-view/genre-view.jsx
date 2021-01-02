@@ -12,7 +12,9 @@ export class GenreView extends React.Component {
     this.state = {};
   }
 
-
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
 
   render() {
     const { genre, films } = this.props;

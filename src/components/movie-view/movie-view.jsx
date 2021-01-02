@@ -16,7 +16,9 @@ export class MovieView extends React.Component {
     this.state = {};
   }
 
-
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
 
   render() {
     const { movie, favorites, getUserInfo } = this.props;
