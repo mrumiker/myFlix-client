@@ -21,7 +21,12 @@ export class DirectorView extends React.Component {
 
       return (
         <Card border="danger" style={{ width: '22rem' }} className="director-view">
+          <Link to="/">
+            <Button className="back-button" variant="link">⬅️</Button>
+          </Link>
+
           <Card.Body>
+
             <Card.Title className="director-name">{director.Name}</Card.Title>
 
             <Card.Text className="director-bio">
@@ -49,9 +54,7 @@ export class DirectorView extends React.Component {
               </ListGroup.Item>)}
             </ListGroup>
 
-            <Link to="/">
-              <Button className="back-button" variant="secondary">Back</Button>
-            </Link>
+
 
           </Card.Body>
         </Card>
@@ -59,7 +62,11 @@ export class DirectorView extends React.Component {
     } else {
       return (
         <Card border="danger" style={{ width: '16rem' }} className="director-view">
+          <Link to="/">
+            <Button className="back-button" variant="link">⬅️</Button>
+          </Link>
           <Card.Body>
+
             <Card.Title className="director-name">{director.Name}</Card.Title>
 
             <Card.Text className="director-bio">
@@ -82,9 +89,7 @@ export class DirectorView extends React.Component {
               </ListGroup.Item>)}
             </ListGroup>
 
-            <Link to="/">
-              <Button className="back-button" variant="secondary">Back</Button>
-            </Link>
+
 
           </Card.Body>
         </Card>)
