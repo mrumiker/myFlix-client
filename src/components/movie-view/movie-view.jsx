@@ -1,8 +1,12 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
+import axios from 'axios';
+import Config from '../../config';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
+
+import './movie-view.scss';
 
 export class MovieView extends React.Component {
 
@@ -12,13 +16,51 @@ export class MovieView extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   render() {
-    const { movie } = this.props;
+    const { movie, favorites, getUserInfo } = this.props;
 
     if (!movie) return null;
 
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+
+    const handleAddFavorite = (e, movie) => {
+      e.preventDefault();
+
+      axios.post(`${Config.API_URL}/users/${user}/add/${movie._id}`,
+        null,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(() => getUserInfo(user, token))
+        .catch(err => console.log(err));
+    }
+
+    const handleRemoveFavorite = (e, movie) => {
+      e.preventDefault();
+
+      axios.delete(`${Config.API_URL}/users/${user}/remove/${movie._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(() => getUserInfo(user, token))
+        .catch(err => console.log(err));
+    }
+
+    const addDeleteButton = favorites.includes(movie._id) ? <Button style={{ width: '18rem' }} className="delete-favorite-button" onClick={(e) => handleRemoveFavorite(e, movie)} variant="outline-danger">Delete from Favorites</Button> :
+      <Button style={{ width: '18rem' }} className="add-favorite-button" onClick={(e) => handleAddFavorite(e, movie)} variant="danger">Add to Favorites</Button>
+
+
+
     return (
       <Card border="info" style={{ width: '22rem' }} className="movie-view">
+        <Link to="/">
+          <Button className="back-button" variant="link">⬅️</Button>
+        </Link>
         <Card.Img className="movie-poster" src={movie.ImagePath} />
         <Card.Body>
           <Card.Title className="movie-title">{movie.Title}</Card.Title>
@@ -36,10 +78,9 @@ export class MovieView extends React.Component {
               <Button variant="link">{`Director: ${movie.Director.Name}`}</Button>
             </Link>
           </Card.Text>
-          <Link to="/">
-            <Button className="back-button" variant="secondary">Back</Button>
-          </Link>
-
+          <Card.Text className="button-container">
+            {addDeleteButton}
+          </Card.Text>
         </Card.Body>
       </Card>
     );
@@ -65,5 +106,6 @@ MovieView.proptypes = {
     ImagePath: PropTypes.string.isRequired,
     Featured: PropTypes.bool
   }).isRequired,
-
+  favorites: PropTypes.array.isRequired,
+  getUserInfo: PropTypes.func.isRequired
 }
