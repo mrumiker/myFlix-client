@@ -1,137 +1,99 @@
 import React from 'react';
 import axios from 'axios';
+import Config from '../../config';
 
 import './main-view.scss';
 
+import { connect } from 'react-redux';
+
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+import { setMovies, setUser, setFaves } from '../../actions/actions';
+
+import MoviesList from '../movies-list/movies-list';
 
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
-import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 import { ProfileView } from '../profile-view/profile-view';
 
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar'
 
-export class MainView extends React.Component {
+class MainView extends React.Component {
 
   constructor() {
     super();
 
-    this.state = {
-      movies: [],
-      user: null,
-      userData: {}
-    };
+    this.state = {};
   }
 
   componentDidMount() {
-    let accessToken = localStorage.getItem('token');
-    console.log("Component Did Mount");
+    const accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
       const user = localStorage.getItem('user');
-      this.setState({
-        user
-      });
+      this.props.setUser(user);
       this.getMovies(accessToken);
       this.getUserInfo(user, accessToken);
-
+      window.scrollTo(0, 0);
     }
   }
 
   getMovies(token) {
-    axios.get('https://cbu-pix-flix.herokuapp.com/movies', {
+    axios.get(`${Config.API_URL}/movies`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        this.setState({
-          movies: response.data
-        });
+        this.props.setMovies(response.data);
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch(err => console.log(err));
   }
 
   getUserInfo = (user, token) => {
-    axios.get(`https://cbu-pix-flix.herokuapp.com/users/${user}`,
+    axios.get(`${Config.API_URL}/users/${user}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        this.setState({
-          userData: response.data
-        })
+        this.props.setFaves(response.data.Favorites)
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => console.log(err));
   }
 
-  populateFavorites(movies, userData) {
-    let favorites = [];
+  populateFavorites(movies, faves) {
 
-    for (let i = 0; i < userData.Favorites.length; i++) {
+    let favorites = [];
+    for (let i = 0; i < faves.length; i++) {
       for (let j = 0; j < movies.length; j++) {
-        if (userData.Favorites[i] === movies[j]._id) {
+        if (faves[i] === movies[j]._id) {
           favorites.push(movies[j]);
+          break;
         }
       }
     }
     return favorites;
   }
 
-  onMovieClick(movie) {
-    this.setState({
-      selectedMovie: movie
-    });
-  }
-
-  onLoggedIn(authData) {
-    this.setState({
-      user: authData.user.Username,
-      userData: authData.user
-    });
-
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('user', authData.user.Username);
-    this.getMovies(authData.token);
-  }
-
-  onRegistered(authData) {
-    console.log(authData);
-    this.setState({
-      user: authData.Username
-    });
-
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('user', authData.Username);
-    this.getMovies(authData.token);
+  onLoggedIn(username, token, faves) {
+    this.props.setUser(username);
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', username);
+    this.props.setFaves(faves);
+    this.getMovies(token);
   }
 
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.open('/', '_self');
+    window.open('/', '_self'); //Check out history in React Router
   }
-
-  toggleRegistered(registered) {
-    this.setState({
-      registered
-    });
-  }
-
-
 
   render() {
-    const { movies, user, userData } = this.state;
+
+    let { movies, user, favorites } = this.props;
 
     const logOutButton = !user ? '' :
       <Button className="logout-button" variant="warning" onClick={() => this.onLoggedOut()}>Logout</Button>;
@@ -162,39 +124,34 @@ export class MainView extends React.Component {
           {Navigation}
 
           <Container className="page-container" fluid>
-            <Row>
 
-              <Route exact path="/" render={() => {
-                if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
 
-                return movies.map(m => (
-                  <Col key={m._id} xs={12} sm={6} md={4} lg={3}>
-                    <MovieCard key={m._id} movie={m} />
-                  </Col>
+            <Route exact path="/" render={() => {
+              if (!user) return <LoginView onLoggedIn={(u, t, f) => this.onLoggedIn(u, t, f)} />;
 
-                ))
-              }
-              } />
+              return <MoviesList movies={movies} />;
+            }
+            } />
 
-              <Route path="/register" render={() => <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />} />
+            <Route path="/register" render={() => <RegistrationView onLoggedIn={(u, t, f) => this.onLoggedIn(u, t, f)} />} />
 
-              <Route path="/movies/:movieId" render={({ match }) =>
-                <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
+            <Route path="/movies/:movieId" render={({ match }) =>
+              <MovieView movie={movies.find(m => m._id === match.params.movieId)} favorites={favorites} getUserInfo={this.getUserInfo} />} />
 
-              <Route path="/directors/:name" render={({ match }) => {
-                if (!movies) return <div className="main-view" />
-                return <DirectorView director={movies.find(m =>
-                  m.Director.Name === match.params.name).Director} films={(movies.filter(m => m.Director.Name === match.params.name))} />
-              }} />
+            <Route path="/directors/:name" render={({ match }) => {
+              if (!movies) return <div className="main-view" />
+              return <DirectorView director={movies.find(m =>
+                m.Director.Name === match.params.name).Director} films={(movies.filter(m => m.Director.Name === match.params.name))} />
+            }} />
 
-              <Route path="/genres/:name" render={({ match }) => {
-                if (!movies) return <div className="main-view" />
-                return <GenreView genre={movies.find(m =>
-                  m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name))} />
-              }} />
+            <Route path="/genres/:name" render={({ match }) => {
+              if (!movies) return <div className="main-view" />
+              return <GenreView genre={movies.find(m =>
+                m.Genre.Name === match.params.name).Genre} films={(movies.filter(m => m.Genre.Name === match.params.name))} />
+            }} />
 
-              <Route path="/profile" render={() => <ProfileView userData={userData} favorites={this.populateFavorites(movies, userData)} getUserInfo={this.getUserInfo} onLoggedOut={this.onLoggedOut} />} />
-            </Row>
+            <Route path="/profile" render={() => <ProfileView favorites={this.populateFavorites(movies, favorites)} getUserInfo={this.getUserInfo} onLoggedOut={this.onLoggedOut} />} />
+
           </Container>
         </div>
       </Router>
@@ -202,3 +159,8 @@ export class MainView extends React.Component {
   }
 }
 
+let mapStateToProps = state => {
+  return { movies: state.movies, user: state.user, favorites: state.favorites }
+}
+
+export default connect(mapStateToProps, { setMovies, setUser, setFaves })(MainView);

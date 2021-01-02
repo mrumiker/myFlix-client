@@ -12,7 +12,9 @@ export class GenreView extends React.Component {
     this.state = {};
   }
 
-
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
 
   render() {
     const { genre, films } = this.props;
@@ -21,6 +23,9 @@ export class GenreView extends React.Component {
 
     return (
       <Card border="info" style={{ width: '22rem' }} className="genre-view">
+        <Link to="/">
+          <Button className="back-button" variant="link">⬅️</Button>
+        </Link>
         <Card.Body>
           <Card.Title className="genre-name">{genre.Name}</Card.Title>
           <Card.Text className="genre-description">{genre.Description}</Card.Text>
@@ -31,9 +36,7 @@ export class GenreView extends React.Component {
             </Link>
             </ListGroup.Item>)}
           </ListGroup>
-          <Link to="/">
-            <Button className="back-button" variant="secondary">Back</Button>
-          </Link>
+
         </Card.Body>
       </Card>
     );
