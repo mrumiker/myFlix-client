@@ -22,6 +22,7 @@ import { ProfileView } from '../profile-view/profile-view';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
+import { propTypes } from 'react-bootstrap/esm/Image';
 
 class MainView extends React.Component {
 
@@ -164,3 +165,12 @@ let mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { setMovies, setUser, setFaves })(MainView);
+
+MainView.proptypes = {
+  movies: propTypes.array,
+  user: propTypes.string,
+  favorites: propTypes.array,
+  setMovies: propTypes.func,
+  setUser: propTypes.func,
+  setFaves: propTypes.func
+}
