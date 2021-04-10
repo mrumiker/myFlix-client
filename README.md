@@ -3,7 +3,7 @@ Client side of myFlix movie lookup app.
 
 This **single page app** lets YOU look up movies, get the most in demand information, save your favorites, and keep coming back for more.
 
-The client side of a full stack MERN project.
+This is the client side of a full stack **MERN** project.
 
 The back end for this project can be found at [flix-lookup-app](https://github.com/mrumiker/flix-lookup-app).
 
